@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "404124165390",
+    "project_id": "ticktick-f0d6e",
+    "storage_bucket": "ticktick-f0d6e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404124165390:android:2b5128dc68d6386d61235f",
+        "android_client_info": {
+          "package_name": "com.ticktick.example.ticktick"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwSG66rum-sYcMkZyjbL_hIPbSmxgrGCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
