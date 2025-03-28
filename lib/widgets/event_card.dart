@@ -19,7 +19,7 @@ class EventCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: AssetImage(image),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
       ),
       child: Stack(

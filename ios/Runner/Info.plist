@@ -14,6 +14,10 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>ticktick_project</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to your photo library to upload event cover photos.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera to take event cover photos.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
