@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../modules/events/bindings/event_binding.dart';
+import '../modules/events/views/event_view.dart';
 import '../modules/home/bindings/home_bindings.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_bindings.dart';
@@ -25,6 +27,11 @@ class Routes {
       name: RoutesPath.homeView,
       binding: HomeBindings(),
       page: () => HomeView(),
+    ),
+    GetPage(
+      name: RoutesPath.eventView,
+      binding: EventBindings(),
+      page: () => EventPage(),
     ),
     GetPage(
       name: RoutesPath.logInView,

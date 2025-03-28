@@ -14,6 +14,8 @@ class RoutesPath {
 
   static const homeView = '/homeView';
 
+  static const eventView = '/eventView';
+
   static const searchView = '/searchView';
 
   static const searchCategoryView = '/searchCategoryView';

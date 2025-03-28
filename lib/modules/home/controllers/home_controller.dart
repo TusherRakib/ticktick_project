@@ -1,8 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-// import 'package:permission_handler/permission_handler.dart';
-
 import '../../../authentication/authentication_controller.dart';
 import '../../../model/login_model.dart';
 
@@ -11,38 +8,42 @@ class HomeController extends GetxController {
   AuthenticationController authController = Get.find();
   RxString locationName = ''.obs;
 
-  // Method to request permission and fetch location
-  // Future<void> getCustomerLocation() async {
-  //   // Request permission to access location
-  //   PermissionStatus permission = await Permission.location.request();
-  //
-  //   // Check if permission is granted
-  //   if (permission.isGranted) {
-  //     try {
-  //       // Get the current position (latitude and longitude)
-  //       Position position = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.high,
-  //       );
-  //
-  //       // Fetch the location name (reverse geocoding)
-  //       List<Placemark> placemarks = await placemarkFromCoordinates(
-  //         position.latitude,
-  //         position.longitude,
-  //       );
-  //
-  //       if (placemarks.isNotEmpty) {
-  //         Placemark placemark = placemarks.first;
-  //         // Set the location name (e.g., City, Country)
-  //         locationName.value = "${placemark.locality}, ${placemark.country}";
-  //       }
-  //     } catch (e) {
-  //       print("Error getting location: $e");
-  //     }
-  //   } else {
-  //     // If permission is denied, handle the error
-  //     print("Location permission denied");
-  //     // Optionally, you can also ask the user to open settings to enable the permission
-  //     openAppSettings();
-  //   }
-  // }
+  var eventsList = <Map<String, dynamic>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchEvents();
+  }
+
+  void fetchEvents() async {
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('events').get();
+
+      eventsList.value = querySnapshot.docs.map((doc) {
+        return {
+          'name': doc['name'] ?? '',
+          'description': doc['description'] ?? '',
+          'category': doc['category'] ?? '',
+          'event_type': doc['event_type'] ?? '',
+          'start_date': doc['start_date'] ?? '',
+          'end_date': doc['end_date'] ?? '',
+          'location': doc['location'] ?? '',
+          'organizer': doc['organizer'] ?? '',
+          'rsvp_deadline': doc['rsvp_deadline'] ?? '',
+          'ticket_info': doc['ticket_info'] ?? '',
+          'seat_type': doc['seat_type'] ?? '',
+          'price': doc['price'] ?? '',
+          'quantity': doc['quantity'] ?? '',
+          'additional_info': doc['additional_info'] ?? '',
+          'created_at': doc['created_at'] ?? '',
+        };
+      }).toList();
+
+      print("Fetched Events: ${eventsList.length}");
+    } catch (e) {
+      print("Error fetching events: $e");
+    }
+  }
 }
