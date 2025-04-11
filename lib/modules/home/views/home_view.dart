@@ -6,27 +6,11 @@ import '../../../utils/app_progress_dialog.dart';
 import '../../../widgets/event_card.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomeView extends StatelessWidget {
+  HomeView({super.key});
+  final HomeController controller = Get.find<HomeController>(); // Use Get.find instead of Get.put
 
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  final HomeController controller = Get.put(HomeController());
-  final List<String> categories = ["Discover", "Concert", "Sport", "Fashion"];
-  String selectedCategory = "Discover";
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeLocation();
-  }
-
-  Future<void> _initializeLocation() async {
-    log(controller.locationName.value);
-  }
+  final List<String> categories = ["Discover", 'Concert', 'Standup Comedy', 'Workshop', 'Conference', 'Seminar'];
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
         title: Row(
           children: [
             Text(
-              "Jakarta, Indonesia",
+              "Sudbury, Ontario",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Icon(Icons.arrow_drop_down, color: Colors.black),
@@ -60,11 +44,8 @@ class _HomeViewState extends State<HomeView> {
             SizedBox(height: 20),
             _buildCategoryTabs(),
             SizedBox(height: 20),
-            _buildSectionTitle("Event near you"),
-            Obx(() => _buildEventList()),
-            SizedBox(height: 20),
-            _buildSectionTitle("Popular event"),
-            Obx(() => _buildEventList()),
+            _buildSectionTitle("Events near you"),
+            Expanded(child: Obx(() => _buildEventList())), // Ensure ListView takes full space
           ],
         ),
       ),
@@ -96,12 +77,12 @@ class _HomeViewState extends State<HomeView> {
           String category = categories[index];
           return Padding(
             padding: EdgeInsets.only(right: 10, bottom: 10),
-            child: ElevatedButton(
+            child: Obx(() => ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: selectedCategory == category
+                backgroundColor: controller.selectedCategory.value == category
                     ? Colors.black
                     : Colors.white,
-                foregroundColor: selectedCategory == category
+                foregroundColor: controller.selectedCategory.value == category
                     ? Colors.white
                     : Colors.black,
                 shape: RoundedRectangleBorder(
@@ -109,12 +90,10 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  selectedCategory = category;
-                });
+                controller.filterEventsByCategory(category);
               },
               child: Text(category),
-            ),
+            )),
           );
         },
       ),
@@ -133,8 +112,7 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 Icon(Icons.account_circle, size: 60, color: Colors.white),
                 SizedBox(height: 10),
-                Text("Welcome!",
-                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                Text("Welcome!", style: TextStyle(color: Colors.white, fontSize: 18)),
               ],
             ),
           ),
@@ -155,10 +133,14 @@ class _HomeViewState extends State<HomeView> {
             leading: Icon(Icons.exit_to_app),
             title: Text("Sign Out"),
             onTap: () {
-              AppProgressDialog.showLoaderDialog(Get.context!);
-              controller.authController.signOut().then((value) {
-                AppProgressDialog.hide();
-              });
+              if (controller.authController != null) { // Prevent null access
+                AppProgressDialog.showLoaderDialog(Get.context!);
+                controller.authController!.signOut().then((value) {
+                  AppProgressDialog.hide();
+                });
+              } else {
+                log("authController is null!");
+              }
             },
           ),
         ],
@@ -177,27 +159,33 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildEventList() {
-    return controller.eventsList.isEmpty
-        ? Center(child: Text("No events available"))
-        : SizedBox(
-      height: 220,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.eventsList.length,
-        itemBuilder: (context, index) {
-          var event = controller.eventsList[index];
-          return Padding(
-            padding: EdgeInsets.only(right: 15),
+    if (controller.filteredEventsList.isEmpty) {
+      return Center(child: Text("No events available"));
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      // physics: NeverScrollableScrollPhysics(),
+      itemCount: controller.filteredEventsList.length,
+      itemBuilder: (context, index) {
+        var event = controller.filteredEventsList[index];
+        return Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: GestureDetector(
+            onTap: (){
+
+              Get.toNamed(RoutesPath.eventDetailsView);
+            },
             child: EventCard(
               image: "assets/images/eminemt_banner.jpg",
-              price: "IDR ${event["price"]}",
-              date: event["start_date"],
-              location: event["location"],
-              title: event["name"],
+              price: event["price"] != null ? "\$${event["price"]} CAD" : "Price not available",
+              date: event["start_date"] ?? "Date not available",
+              location: event["location"] ?? "Location not available",
+              title: event["name"] ?? "Unnamed Event",
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

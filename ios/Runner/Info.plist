@@ -14,6 +14,17 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>ticktick_project</string>
+		<key>CFBundleURLTypes</key>
+        <array>
+        	<dict>
+        		<key>CFBundleTypeRole</key>
+        		<string>Editor</string>
+        		<key>CFBundleURLSchemes</key>
+        		<array>
+        			<string>com.googleusercontent.apps.404124165390-t2s7pvhf35tqggcbhk9a9d3ov7bnf21f</string>
+        		</array>
+        	</dict>
+        </array>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to upload event cover photos.</string>
     <key>NSCameraUsageDescription</key>
@@ -30,6 +41,8 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>GIDClientID</key>
+        <string>404124165390-t2s7pvhf35tqggcbhk9a9d3ov7bnf21f.apps.googleusercontent.com</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

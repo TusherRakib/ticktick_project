@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:ticktick_project/modules/event_details/bindings/event_details_binding.dart';
+import 'package:ticktick_project/modules/event_details/views/event_details_view.dart';
+import 'package:ticktick_project/modules/event_details/views/ticket_booking_view.dart';
 import '../modules/events/bindings/event_binding.dart';
 import '../modules/events/views/event_view.dart';
 import '../modules/home/bindings/home_bindings.dart';
@@ -23,6 +26,19 @@ class Routes {
       binding: SignupBindings(),
       page: () => SignupPage(),
     ),
+
+    GetPage(
+      name: RoutesPath.eventDetailsView,
+      binding: EventDetailsBindings(),
+      page: () => EventDetailsView(),
+    ),
+    // GetPage(
+    //   name: RoutesPath.ticketBookingsView,
+    //   binding: TicketBookingBindings(),
+    //   page: () => TicketBookingView(),
+    // ),
+
+
     GetPage(
       name: RoutesPath.homeView,
       binding: HomeBindings(),

@@ -16,6 +16,10 @@ class RoutesPath {
 
   static const eventView = '/eventView';
 
+  static const eventDetailsView = '/eventDetailsView';
+
+  static const ticketBookingsView = '/ticketBookingsView';
+
   static const searchView = '/searchView';
 
   static const searchCategoryView = '/searchCategoryView';

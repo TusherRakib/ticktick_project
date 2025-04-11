@@ -9,6 +9,8 @@ class HomeController extends GetxController {
   RxString locationName = ''.obs;
 
   var eventsList = <Map<String, dynamic>>[].obs;
+  var filteredEventsList = <Map<String, dynamic>>[].obs;
+  RxString selectedCategory = "Discover".obs;
 
   @override
   void onInit() {
@@ -41,9 +43,19 @@ class HomeController extends GetxController {
         };
       }).toList();
 
-      print("Fetched Events: ${eventsList.length}");
+      filterEventsByCategory("Discover");
     } catch (e) {
       print("Error fetching events: $e");
+    }
+  }
+
+  void filterEventsByCategory(String category) {
+    selectedCategory.value = category;
+    if (category == "Discover") {
+      filteredEventsList.assignAll(eventsList);
+    } else {
+      filteredEventsList.assignAll(
+          eventsList.where((event) => event['category'] == category).toList());
     }
   }
 }
